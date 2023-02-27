@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -10,6 +12,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Trakmus.api.DAL;
+
 
 namespace Trakmus.api
 {
@@ -35,6 +39,13 @@ namespace Trakmus.api
                     Description = "API til TrakMus"
                 });
             });
+
+            string connectionString = Configuration.GetConnectionString("WebApiDatabase");
+
+            services.AddDbContext<TrakMusContext>(options => options.UseMySql(connectionString,MySqlServerVersion.LatestSupportedServerVersion));
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(x => x.LoginPath = "/account/login");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

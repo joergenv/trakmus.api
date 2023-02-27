@@ -4,17 +4,15 @@ namespace Trakmus.api.DAL.Models
 {
     public class Tractor
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
-        public Guid GuidId { get; set; }
-
-        public int TractorModelId { get; set; }
+        public Guid TractorModelId { get; set; }
 
         public virtual TractorModel TractorModel { get; set; }
 
-        public int OwnerId { get; set; }
+        public Guid PersonId { get; set; }
 
-        public virtual Owner Owner { get; set; }
+        public virtual Person Owner { get; set; }
 
         public int Year { get; set; }
 
@@ -28,7 +26,7 @@ namespace Trakmus.api.DAL.Models
 
         public int Cylinders { get; set; }
 
-        public char[] Country { get; set; }
+        public string Country { get; set; }
 
         public FuelType FuelType { get; set; }
         

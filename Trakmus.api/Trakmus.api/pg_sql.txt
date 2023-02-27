@@ -1,0 +1,62 @@
+﻿--CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+create table accounts (
+ 	id uuid primary key default uuid_generate_v4(),
+ 	firstname varchar not null,
+ 	lastname varchar not null,
+ 	email varchar unique not null,
+ 	password varchar not null,
+ 	created_on timestamp not null,
+ 	last_login timestamp
+);
+
+drop table accounts;
+
+create table manufacturer (
+	id uuid primary key default uuid_generate_v4(),
+	name varchar not null,
+	country char(3) not null,
+	history varchar
+)
+
+drop table tractor_models;
+
+create table tractormodels (
+	id uuid primary key default uuid_generate_v4(),
+	name varchar not null,
+	introyear int,
+	lastyear int,
+	history varchar,
+	manufacturer_id uuid not null,
+	constraint fk_manufacturer
+		foreign key(id) references manufacturer(id)
+)
+
+create table owners (
+	id uuid primary key default uuid_generate_v4(),
+	name varchar not null,
+	account_id uuid,
+	constraint fk_account 
+		foreign key (id) references accounts(id)
+)
+
+create table tractors (
+	id uuid primary key default uuid_generate_v4(),
+	tractormodel_id uuid not null,
+	owner_id uuid not null,
+	year int,
+	horsepowers int,
+	forward int,
+	reverse int,
+	cylinders int,
+	fueltype int,
+	fronttires varchar,
+	backtires varchar,
+	weight int,
+	cc int,
+	liftsystem int,
+	stroke int,
+	bore int,
+	history varchar,
+	constraint fk_tractormodel foreign key (id) references tractormodels(id)
+)

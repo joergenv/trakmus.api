@@ -4,6 +4,7 @@ using Trakmus.api.DAL.Models;
 using System.Data;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore.Internal;
 
 /// <summary>
 /// https://www.youtube.com/watch?v=pb218L_-0pk
@@ -13,12 +14,26 @@ using System.Linq;
 
 namespace Trakmus.api.DAL
 {
+
+    public interface ITrakMusContext : IDisposable
+    {
+        DbSet<Tractor> Tractors { get; set; }
+        DbSet<TractorModel> TractorModels { get; set; }
+
+        DbSet<Manufacturer> Manufactureres { get; set; }
+
+        DbSet<User> Users { get; set; }
+
+        DbSet<Owner> Owners { get; set; }
+
+        int SaveChanges();
+    }
+
     public class TrakMusContext : DbContext
     {
-        public TrakMusContext()
-        {
+        public TrakMusContext(DbContextOptions<TrakMusContext> options) : base(options)
+        { }
 
-        }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
         }
@@ -34,6 +49,7 @@ namespace Trakmus.api.DAL
         public DbSet<Manufacturer> Manufactureres { get; set; }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Person> Persons { get; set; }
 
         public  DbSet<Owner> Owners { get; set; }
     }

@@ -3,13 +3,11 @@ namespace Trakmus.api.DAL.Models
 {
     public class TractorModel
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
-        public Guid GuidId { get; set; }
+        public Guid ManufacturerId { get; set; }
 
-        public int MyProperty { get; set; }
-
-        public int ManufacturerId { get; set; }
+        public virtual Manufacturer Manufacturer { get; set; }
 
         public string Name { get; set; }
 
