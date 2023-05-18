@@ -2,7 +2,7 @@
 using System;
 using System.Security.Cryptography;
 using System.Text;
-
+using Trakmus.api.DAL;
 
 namespace Trakmus.api.Shared
 {
@@ -13,6 +13,17 @@ namespace Trakmus.api.Shared
         /// </summary>
         /// <param name="password"></param>
         /// <returns></returns>
+        /// 
+
+        //Stringarray = [fueltype][sprog]
+
+        private static string[,] fuelTypes = new string[5,2] {
+            { "Diesel", "Diesel" },
+            { "Benzin", "Gasolin" },
+            { "Petrolium", "Kerosene" },
+            { "Gas", "Gas" },
+            { "TVO", "TVO" }};
+
         public static string PasswordHash(this string password)
         {
             MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
@@ -25,6 +36,28 @@ namespace Trakmus.api.Shared
 
             return sb.ToString();
 
+        }
+
+        public static FuelType ToFuelType (this string fuelName)
+        {
+            switch (fuelName.ToUpper())
+            {
+                case "DIESEL":
+                    return FuelType.Diesel;
+                case "BENZIN":
+                    return FuelType.Gasolin;
+                case "PETROLIUM":
+                    return FuelType.Kerosene;
+                case "TVO":
+                    return FuelType.TVO;
+                default:
+                    return FuelType.Diesel;
+            }
+        }
+
+        public static string ToString(this FuelType fuel, language lang)
+        {
+            return fuelTypes[((int)fuel),(int)lang];
         }
     }
 }

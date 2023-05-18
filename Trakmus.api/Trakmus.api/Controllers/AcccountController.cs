@@ -33,7 +33,7 @@ namespace Trakmus.api.Controllers
                 {
                     var pwdHash = password.PasswordHash();
 
-                    var pUser = _context
+                    
 
                     var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == username && u.Password == pwdHash);
 

@@ -1,25 +1,35 @@
 ﻿--CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
-create table accounts (
+create table users (
  	id uuid primary key default uuid_generate_v4(),
- 	firstname varchar not null,
- 	lastname varchar not null,
- 	email varchar unique not null,
+ 	person_id uuid not null,
  	password varchar not null,
  	created_on timestamp not null,
- 	last_login timestamp
+ 	last_login timestamp 	
 );
 
-drop table accounts;
+CREATE TABLE public.persons (
+	id uuid NOT NULL DEFAULT uuid_generate_v4(),
+	user_id uuid NULL,
+	firstname varchar NOT NULL,
+	lastname varchar NOT NULL,
+	phone varchar NULL,
+	note varchar NULL,
+	email varchar NULL,
+	CONSTRAINT persons_pkey PRIMARY KEY (id),
+	CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES public.users(id)
+);
 
-create table manufacturer (
+--drop table accounts;
+
+create table manufacturers (
 	id uuid primary key default uuid_generate_v4(),
 	name varchar not null,
 	country char(3) not null,
 	history varchar
-)
+);
 
-drop table tractor_models;
+--drop table tractor_models;
 
 create table tractormodels (
 	id uuid primary key default uuid_generate_v4(),
@@ -28,22 +38,16 @@ create table tractormodels (
 	lastyear int,
 	history varchar,
 	manufacturer_id uuid not null,
-	constraint fk_manufacturer
-		foreign key(id) references manufacturer(id)
-)
+	constraint fk_manufacturers
+		foreign key(id) references manufacturers(id)
+);
 
-create table owners (
-	id uuid primary key default uuid_generate_v4(),
-	name varchar not null,
-	account_id uuid,
-	constraint fk_account 
-		foreign key (id) references accounts(id)
-)
+drop table tractors
 
 create table tractors (
 	id uuid primary key default uuid_generate_v4(),
 	tractormodel_id uuid not null,
-	owner_id uuid not null,
+	person_id uuid not null,
 	year int,
 	horsepowers int,
 	forward int,
@@ -58,5 +62,6 @@ create table tractors (
 	stroke int,
 	bore int,
 	history varchar,
-	constraint fk_tractormodel foreign key (id) references tractormodels(id)
-)
+	constraint fk_tractormodel foreign key (id) references tractormodels(id),
+	constraint fk_owner foreign key (person_id) references persons(id)
+);

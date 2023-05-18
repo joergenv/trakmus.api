@@ -3,82 +3,64 @@ using System.Collections.Generic;
 using Trakmus.api.DAL.Models;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-
+using System.Threading.Tasks;
 
 namespace Trakmus.api.DAL
 {
-    public interface ITractorRepository : IDisposable
+    public interface ITractorRepository : IRepositoryBase<Tractor>
     {
-        IEnumerable<Tractor> GetTractors();
-        Tractor GetTractorById(Guid tractorId);
-        void Insert(Tractor tractor);
-        void Update(Tractor tractor);
-        void Delete(Guid tractorId);
+        Task<Tractor> GetTractorByIdAsync(Guid id);
 
-        void Save();
+        //IQueryable<Tractor> Search(string s);
+
+        Task<List<Person>> GetOwnersAsync();
+
+        Task<List<Tractor>> GetAllTractorsAsync();
+
+        Task<Tractor> CreateTractorAsync(Tractor tractor);
+
+        Task<Tractor> UpdateTractorAsync(Tractor tractor);
+
     }
 
-    public class TractorRepository : ITractorRepository, IDisposable
+
+    public class TractorRepository : RepositoryBase<Tractor>, ITractorRepository
     {
-        private TrakMusContext context;
 
-        public TractorRepository(TrakMusContext context)
+        public TractorRepository(TrakMusContext context) : base(context)
         {
-            this.context = context;
+
         }
 
-        public IEnumerable<Tractor> GetTractors()
+        public async Task<Tractor> GetTractorByIdAsync(Guid id)
         {
-            return context.Tractors.ToList();
+            return await FindAll().FirstOrDefaultAsync<Tractor>(m => m.Id == id);
         }
 
-        public Tractor GetTractorById(Guid tractorId)
+        public async Task<List<Tractor>> GetAllTractorsAsync()
         {
-            return context.Tractors.FirstOrDefault(t => t.GuidId == tractorId);
+            return await FindAll().ToListAsync();
         }
 
-        public void Insert(Tractor tractor)
+        public async Task<Tractor> CreateTractorAsync(Tractor tractor)
         {
-            context.Tractors.Add(tractor);
+            return await CreateAsync(tractor);
         }
 
-        public void Update(Tractor tractor)
+        public async Task<List<Person>> GetOwnersAsync()
         {
-            context.Entry(tractor).State = EntityState.Modified;
+            var owners = await FindAll().Select(p => p.Owner).GroupBy(p => p.Id).Select(g => g.First()).ToListAsync();
+            return owners;
+            
         }
 
-        public void Delete(Guid tractorId)
+        public async Task<Tractor> UpdateTractorAsync(Tractor tractor)
         {
-            var t = context.Tractors.FirstOrDefault(t=>t.GuidId == tractorId);
-            if (t == null)
-                throw new Exception("Traktor blev ikke fundet");
-
-            context.Tractors.Remove(t);
+            return await UpdateAsync(tractor);
         }
-
-        public void Save()
+        public void DeleteTractor(Guid id)
         {
-            context.SaveChanges();
-        }
-
-        private bool disposed = false;
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!this.disposed)
-            {
-                if (disposing)
-                {
-                    context.Dispose();
-                }
-            }
-            this.disposed = true;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            return;
         }
     }
 }

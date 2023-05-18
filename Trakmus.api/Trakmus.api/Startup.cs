@@ -46,6 +46,12 @@ namespace Trakmus.api
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(x => x.LoginPath = "/account/login");
+
+            services.AddTransient(typeof(IRepositoryBase<>), typeof(RepositoryBase<>));
+            services.AddTransient<IPersonRepository, PersonRepository>();
+            services.AddTransient<ITractorRepository, TractorRepository>();
+            services.AddTransient<IVehicleModelRepository, VerhicleModelRepository>();
+            services.AddTransient<IManufacturerRepository, ManufacturerRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

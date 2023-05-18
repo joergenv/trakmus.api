@@ -3,82 +3,52 @@ using System.Collections.Generic;
 using Trakmus.api.DAL.Models;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace Trakmus.api.DAL
 {
-    public interface IManufacturerRepository : IDisposable
+    public interface IManufacturerRepository : IRepositoryBase<Manufacturer>
     {
-        IEnumerable<Manufacturer> GetManufacturers();
-        Manufacturer GetManufacturerById(Guid modelId);
-        void Insert(Manufacturer manufacturer);
-        void Update(Manufacturer manufacturer);
-        void Delete(Guid modelId);
+        Task<Manufacturer> GetManufacturerByIdAsync(Guid id);
 
-        void Save();
+        Task<List<Manufacturer>> GetAllManufacturersAsync();
+
+        Task<Manufacturer> CreateManufacturerAsync(Manufacturer manufacturer);
+
+        Task<Manufacturer> UpdateManufacturerAsync(Manufacturer manufacturer);
+        
     }
 
 
-    public class ManufacturerRepository : IManufacturerRepository, IDisposable
+    public class ManufacturerRepository : RepositoryBase<Manufacturer>, IManufacturerRepository
     {
-        private TrakMusContext context;
 
-        public ManufacturerRepository(TrakMusContext context)
+        public ManufacturerRepository(TrakMusContext context) : base(context)
         {
-            this.context = context;
+            
         }
 
-        public IEnumerable<Manufacturer> GetManufacturers()
+        public async Task<List<Manufacturer>> GetAllManufacturersAsync()
         {
-            return context.Manufactureres.ToList();
+            return await FindAll().ToListAsync();
         }
 
-        public Manufacturer GetManufacturerById(Guid manufacturerId)
+        public async Task<Manufacturer> GetManufacturerByIdAsync(Guid id)
         {
-            return context.Manufactureres.FirstOrDefault(t => t.GuidId == manufacturerId);
+            return await FindAll().FirstOrDefaultAsync<Manufacturer>(m => m.Id == id);
         }
 
-        public void Insert(Manufacturer manufacturer)
+        public async Task<Manufacturer> CreateManufacturerAsync(Manufacturer manufacturer)
         {
-            context.Manufactureres.Add(manufacturer);
+            return await CreateAsync(manufacturer);
         }
-
-        public void Update(Manufacturer manufacturer)
+        public async Task<Manufacturer> UpdateManufacturerAsync(Manufacturer manufacturer)
         {
-            context.Entry(manufacturer).State = EntityState.Modified;
+            return await UpdateAsync(manufacturer);
         }
-
-        public void Delete(Guid manufacturerId)
+        public void Delete(Guid id)
         {
-            var m = context.Manufactureres.FirstOrDefault(t => t.GuidId == manufacturerId);
-            if (m == null)
-                throw new Exception("Fabrikanten blev ikke fundet");
-
-            context.Manufactureres.Remove(m);
-        }
-
-        public void Save()
-        {
-            context.SaveChanges();
-        }
-
-        private bool disposed = false;
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!this.disposed)
-            {
-                if (disposing)
-                {
-                    context.Dispose();
-                }
-            }
-            this.disposed = true;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            return;
         }
     }
 }

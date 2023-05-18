@@ -11,89 +11,49 @@ using System.Runtime.InteropServices;
 
 namespace Trakmus.api.DAL
 {
-    public interface IPersonRepository : IDisposable
+    public interface IPersonRepository : IRepositoryBase<Person>
     {
-        IEnumerable<Person> GetOwners { get; set; }
-        IEnumerable<Person> GetUsers { get; set; }
-        IEnumerable<Person> GetPersons { get; set; }
+        Task<Person> GetPersonByIdAsync(Guid id);
 
-        Task<Person> GetPersonByIdAsync(string id);
+        Task<List<Person>> GetAllPersonsAsync();
 
-        Task<Person>GetPersonByEmailAsync(string email);
-        void Insert(Person person);
-        void Update(Person person);
-        void Delete(Guid Id);
+        Task<Person> CreatePersonAsync(Person person);
 
-        void Save();
+        Task<Person> UpdatePersonAsync(Person person);
+
+
     }
 
-    public class PersonRepository : IPersonRepository, IDisposable
+
+    public class PersonRepository : RepositoryBase<Person>, IPersonRepository
     {
-        TrakMusContext context;
-        Logger<T>
 
-        public PersonRepository (TrakMusContext context)
-        {
-            this.context = context;
-        }
-
-        public Task<Person> GetPersonByEmailAsync(string email)
-        {
-            if (string.IsNullOrEmpty(email))
-                throw new Exception(string.Format("Email er tomt."));
-
-            var person = context.Persons.FirstOrDefaultAsync(p => p.Email.ToUpper() == email.ToUpper());
-
-            if (person == null)
-                throw new Exception(String.Format("Personen med email {0} findes ikke", email));
-
-            return person;
-        }
-
-        public Task<Person> GetPersonByIdAsync(string id)
-        {
-            Guid personId;
-
-            if (!Guid.TryParse(id, out personId))
-                throw new Exception(string.Format("Id '{0}' er ikke valid id"));
-
-            var person = context.Persons.FirstOrDefaultAsync(p => p.Id == personId);
-
-            if (person == null)
-                throw new Exception(String.Format("Personen med id {0} findes ikke", personId));
-
-            return person;
-
-        }
-
-        public async Task<IEnumerable<Person>> GetOnwers()
-        {
-            var owners = await context.Tractors.Select(t => t.Owner).Distinct().ToListAsync();
-
-            return owners;
-        }
-
-        public async Task<IEnumerable<Person>> GetUsers()
-        {
-            var users = await context.Persons.Where(p => p.UserId != null).ToListAsync();
-
-            return users;
-        }
-
-        public Task<Person> Insert(Person person)
-        {
-            return Task.FromResult(new Person());
-        }
-
-        public Task<Person> Update(Person person)
-        {
-            return Task.FromResult(new Person());
-        }
-
-        public void Delete(Guid id)
+        public PersonRepository(TrakMusContext context) : base(context)
         {
 
         }
 
+        public Task<Person> GetPersonByIdAsync(Guid id)
+        {
+            return FindAll().FirstOrDefaultAsync<Person>(m => m.Id == id);
+        }
+
+        public async Task<Person> CreatePersonAsync(Person person)
+        {
+            return await CreateAsync(person);
+        }
+
+        public async Task<List<Person>> GetAllPersonsAsync()
+        {
+            return await FindAll().ToListAsync();
+        }
+        public async Task<Person> UpdatePersonAsync (Person Person)
+        {
+            return await UpdateAsync(Person);
+        }
+        public void Delete(Person person)
+        {
+            return;
+        }
     }
 }

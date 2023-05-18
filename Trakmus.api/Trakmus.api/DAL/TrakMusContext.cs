@@ -18,13 +18,12 @@ namespace Trakmus.api.DAL
     public interface ITrakMusContext : IDisposable
     {
         DbSet<Tractor> Tractors { get; set; }
-        DbSet<TractorModel> TractorModels { get; set; }
+        DbSet<VehicleModel> TractorModels { get; set; }
 
         DbSet<Manufacturer> Manufactureres { get; set; }
 
         DbSet<User> Users { get; set; }
 
-        DbSet<Owner> Owners { get; set; }
 
         int SaveChanges();
     }
@@ -44,13 +43,13 @@ namespace Trakmus.api.DAL
 
         //entities
         public DbSet<Tractor> Tractors { get; set; }
-        public DbSet<TractorModel> TractorModels { get; set; }
+        public DbSet<VehicleModel> TractorModels { get; set; }
 
         public DbSet<Manufacturer> Manufactureres { get; set; }
 
         public DbSet<User> Users { get; set; }
         public DbSet<Person> Persons { get; set; }
 
-        public  DbSet<Owner> Owners { get; set; }
+        
     }
 }
