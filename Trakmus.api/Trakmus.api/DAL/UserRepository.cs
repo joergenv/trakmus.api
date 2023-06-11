@@ -34,7 +34,7 @@ namespace Trakmus.api.DAL
 
         public User GetUserById(Guid userId)
         {
-            return context.Users.FirstOrDefault(t => t.GuidId == userId);
+            return context.Users.FirstOrDefault(t => t.Id == userId);
         }
 
         public void Insert(User user)
@@ -49,7 +49,7 @@ namespace Trakmus.api.DAL
 
         public void Delete(Guid userId)
         {
-            var t = context.Users.FirstOrDefault(t => t.GuidId == userId);
+            var t = context.Users.FirstOrDefault(t => t.Id == userId);
             if (t == null)
                 throw new Exception("Brugeren blev ikke fundet");
 

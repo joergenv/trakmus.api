@@ -85,35 +85,35 @@ namespace Trakmus.api.DAL.Models
             return output;
         }
 
-        public static explicit operator List<TractorVm>(List<Tractor> t)
-        {
+        //public static explicit operator List<TractorVm>(List<Tractor> t)
+        //{
 
-            List<TractorVm> output = t.Select(model => new TractorVm()
-            {
-                Id = model.Id.ToString(),
-                BackTires = model.BackTires,
-                Bore = model.Bore,
-                CC = model.CC,
-                Country = model.Country,
-                Cylinders = model.Cylinders,
-                Forward = model.Forward,
-                FrontTires = model.FrontTires,
-                HorsePower = model.HorsePower,
-                LiftSystem = model.LiftSystem.ToString(),
-                ModelId = model.TractorModel.Id.ToString(),
-                Manufacturer = model.TractorModel.Manufacturer.Name.ToString(),
-                Owner = model.Owner.FirstName + model.Owner.LastName,
-                OwnerId = model.Owner.Id.ToString(),
-                Reverse = model.Reverse,
-                ModelName = model.TractorModel.Name,
-                Stroke = model.Stroke,
-                Weight = model.Weight,
-                Year = model.Year,
-                Fuel = model.Fuel.ToString(language.Dansk)
-            }).ToList();
+        //    List<TractorVm> output = t.Select(model => new TractorVm()
+        //    {
+        //        Id = model.Id.ToString(),
+        //        BackTires = model.BackTires,
+        //        Bore = model.Bore,
+        //        CC = model.CC,
+        //        Country = model.Country,
+        //        Cylinders = model.Cylinders,
+        //        Forward = model.Forward,
+        //        FrontTires = model.FrontTires,
+        //        HorsePower = model.HorsePower,
+        //        LiftSystem = model.LiftSystem.ToString(),
+        //        ModelId = model.TractorModel.Id.ToString(),
+        //        Manufacturer = model.TractorModel.Manufacturer.Name.ToString(),
+        //        Owner = model.Owner.FirstName + model.Owner.LastName,
+        //        OwnerId = model.Owner.Id.ToString(),
+        //        Reverse = model.Reverse,
+        //        ModelName = model.TractorModel.Name,
+        //        Stroke = model.Stroke,
+        //        Weight = model.Weight,
+        //        Year = model.Year,
+        //        Fuel = model.Fuel.ToString(language.Dansk)
+        //    }).ToList();
 
-            return output;
-        }
+        //    return output;
+        //}
 
 
     }

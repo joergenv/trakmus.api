@@ -2,10 +2,12 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
@@ -13,6 +15,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Trakmus.api.DAL;
+using Trakmus.api.DAL.Models;
+using Trakmus.api.Services;
+
 
 
 namespace Trakmus.api
@@ -27,6 +32,7 @@ namespace Trakmus.api
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
@@ -40,18 +46,21 @@ namespace Trakmus.api
                 });
             });
 
-            string connectionString = Configuration.GetConnectionString("WebApiDatabase");
+            /// DATABASE-settings 
+            services.AddDbContext<TrakMusContext>(options => options.UseNpgsql(Configuration.GetConnectionString("WebApiDatabase")));
 
-            services.AddDbContext<TrakMusContext>(options => options.UseMySql(connectionString,MySqlServerVersion.LatestSupportedServerVersion));
+            //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            //    .AddCookie(x => x.LoginPath = "/account/login");
 
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(x => x.LoginPath = "/account/login");
+            services.AddHttpContextAccessor();
 
             services.AddTransient(typeof(IRepositoryBase<>), typeof(RepositoryBase<>));
             services.AddTransient<IPersonRepository, PersonRepository>();
             services.AddTransient<ITractorRepository, TractorRepository>();
             services.AddTransient<IVehicleModelRepository, VerhicleModelRepository>();
             services.AddTransient<IManufacturerRepository, ManufacturerRepository>();
+            services.AddScoped<IManufacturerService, ManufacturerService>();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

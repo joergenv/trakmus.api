@@ -5,7 +5,6 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using Microsoft.VisualBasic;
 using System.Runtime.InteropServices;
 
@@ -21,6 +20,7 @@ namespace Trakmus.api.DAL
 
         Task<Person> UpdatePersonAsync(Person person);
 
+        void DeletePerson(Person person);
 
     }
 
@@ -51,7 +51,7 @@ namespace Trakmus.api.DAL
         {
             return await UpdateAsync(Person);
         }
-        public void Delete(Person person)
+        public void DeletePerson(Person person)
         {
             return;
         }

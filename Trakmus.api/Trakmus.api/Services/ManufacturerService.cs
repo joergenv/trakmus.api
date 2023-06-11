@@ -6,7 +6,7 @@ using Trakmus.api.DAL.Models;
 
 namespace Trakmus.api.Services
 {
-    interface IManufacturerService
+    public interface IManufacturerService
     {
         Task<Manufacturer> CreateManufacturerAsync(Manufacturer manufacturer);
 

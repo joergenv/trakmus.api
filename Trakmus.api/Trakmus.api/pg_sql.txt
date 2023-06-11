@@ -31,16 +31,18 @@ create table manufacturers (
 
 --drop table tractor_models;
 
-create table tractormodels (
-	id uuid primary key default uuid_generate_v4(),
-	name varchar not null,
-	introyear int,
-	lastyear int,
-	history varchar,
-	manufacturer_id uuid not null,
+create table VehicleModels (
+	Id uuid primary key default uuid_generate_v4(),
+	Name varchar not null,
+	Introyear int,
+	Lastyear int,
+	History varchar,
+	Manufacturer_id uuid not null,
 	constraint fk_manufacturers
-		foreign key(id) references manufacturers(id)
+		foreign key(Id) references Manufacturers(Id)
 );
+
+
 
 drop table tractors
 
@@ -65,3 +67,8 @@ create table tractors (
 	constraint fk_tractormodel foreign key (id) references tractormodels(id),
 	constraint fk_owner foreign key (person_id) references persons(id)
 );
+
+
+CREATE USER lorna;
+ALTER USER lorna WITH ENCRYPTED PASSWORD 'password';
+GRANT ALL PRIVILEGES ON DATABASE test TO lorna;

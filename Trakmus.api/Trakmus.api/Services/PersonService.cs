@@ -47,7 +47,7 @@ namespace Trakmus.api.Services
             }
             catch(Exception ex)
             {
-                throw new Exception(ex);
+                throw new Exception(ex.Message);
             }        
         }
 

@@ -54,7 +54,7 @@ namespace Trakmus.api.DAL
         {
             return await UpdateAsync(vehicleModel);
         }
-        public void Delete(VehicleModel vehicleModel)
+        public void DeleteVehicle(VehicleModel vehicleModel)
         {
             return;
         }

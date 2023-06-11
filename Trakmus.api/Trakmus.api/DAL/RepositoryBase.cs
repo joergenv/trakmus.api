@@ -3,8 +3,7 @@ using System.Linq;
 using System;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
-using Org.BouncyCastle.Crypto.Agreement;
-using Ubiety.Dns.Core;
+
 
 namespace Trakmus.api.DAL
 {
@@ -18,7 +17,7 @@ namespace Trakmus.api.DAL
     }
 
 
-    public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class
+    public class RepositoryBase<T> : IRepositoryBase<T> where T : class
     {
         protected TrakMusContext RepositoryContext { get; set; }
 

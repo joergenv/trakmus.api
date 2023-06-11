@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.VisualBasic;
-using Org.BouncyCastle.Asn1.IsisMtt.X509;
+//using Org.BouncyCastle.Asn1.IsisMtt.X509;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
@@ -61,7 +61,7 @@ namespace Trakmus.api.Services
 
         }
 
-        public List<TractorVm> GetAllTractorsASync()
+        public List<TractorVm> GetAllTractorsAsync()
         {
             var result = _tractorRepository.GetAllTractorsAsync();
 
