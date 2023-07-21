@@ -8,7 +8,7 @@ create table users (
  	last_login timestamp 	
 );
 
-CREATE TABLE public.persons (
+CREATE TABLE persons (
 	id uuid NOT NULL DEFAULT uuid_generate_v4(),
 	user_id uuid NULL,
 	firstname varchar NOT NULL,
@@ -22,11 +22,11 @@ CREATE TABLE public.persons (
 
 --drop table accounts;
 
-create table manufacturers (
-	id uuid primary key default uuid_generate_v4(),
-	name varchar not null,
-	country char(3) not null,
-	history varchar
+create table Manufacturers (
+	Id uuid primary key default uuid_generate_v4(),
+	Name varchar not null,
+	Country char(3) not null,
+	History varchar
 );
 
 --drop table tractor_models;
@@ -72,3 +72,6 @@ create table tractors (
 CREATE USER lorna;
 ALTER USER lorna WITH ENCRYPTED PASSWORD 'password';
 GRANT ALL PRIVILEGES ON DATABASE test TO lorna;
+
+-- evt create
+alter ROLE trakmususr NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT LOGIN NOREPLICATION NOBYPASSRLS PASSWORD 'S0mmert!d';

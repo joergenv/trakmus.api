@@ -1,57 +1,79 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using Trakmus.api.Services.ViewModels;
 using Trakmus.api.Shared;
 
 namespace Trakmus.api.DAL.Models
 {
+    [Table("tractors")]
     public class Tractor
     {
+        [Column("id")]
         public Guid Id { get; set; }
 
+        [Column("tractormodel_id")]
         public Guid TractorModelId { get; set; }
 
         public virtual VehicleModel TractorModel { get; set; }
 
+        [Column("person_id")]
         public Guid PersonId { get; set; }
 
         public virtual Person Owner { get; set; }
 
+        [Column("year")]
         public int Year { get; set; }
 
+        [Column("horsepower")]
         public int HorsePower { get; set; }
 
+
         //fremad-gear
+        [Column("forward")]
         public int Forward { get; set; }
 
         //bak-gear
+        [Column("reverse")]
         public int Reverse { get; set; }
 
+        [Column("cylinders")]
         public int Cylinders { get; set; }
 
+        [Column("country")]
         public string Country { get; set; }
 
+        [Column("fueltype")]
         public FuelType Fuel { get; set; }
-        
+
+        [Column("fronttires")]
         public string FrontTires { get; set; }
 
+        [Column("backtires")]
         public string BackTires { get; set; }
 
+        [Column("weight")]
         public int Weight { get; set; }
 
+        [Column("cc")]
         public int CC { get; set; }
 
         //slaglængde
+        [Column("stroke")]
         public int Stroke { get; set; }
 
         //boring
+        [Column("bore")]
         public int Bore { get; set; }
 
+        [Column("liftsystem")]
         public LiftSystem LiftSystem { get; set; }
 
+        [Column("history")]
         public string History { get; set; }
 
+        [Column("enabled")]
         public bool Enabled { get; set; }
 
         public static explicit operator TractorVm(Tractor t)

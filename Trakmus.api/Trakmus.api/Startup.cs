@@ -59,8 +59,12 @@ namespace Trakmus.api
             services.AddTransient<ITractorRepository, TractorRepository>();
             services.AddTransient<IVehicleModelRepository, VerhicleModelRepository>();
             services.AddTransient<IManufacturerRepository, ManufacturerRepository>();
+            services.AddTransient<ITractorRepository, TractorRepository>();
+            services.AddTransient<IPersonRepository, PersonRepository>();
             services.AddScoped<IManufacturerService, ManufacturerService>();
-            
+            services.AddScoped<IVehicleService, VehicleService>();
+            services.AddScoped<ITractorService, TractorService>();
+            services.AddScoped<IPersonService, PersonService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

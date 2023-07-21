@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.VisualBasic;
 //using Org.BouncyCastle.Asn1.IsisMtt.X509;
@@ -25,9 +26,9 @@ namespace Trakmus.api.Services
     {
         Task<TractorVm> GetTractorByIdAsync(Guid id);
 
-        List<TractorVm> GetTractorsAsync(string search);
+        Task<List<TractorVm>> GetTractorsAsync(string search);
 
-        Task<Tractor> AddTractorAsync(Tractor tractor);
+        Task<Tractor> CreateTractorAsync(Tractor tractor);
 
         Task<Tractor> UpdateTractorAsync(Tractor tractor);
         Task DeleteTractorAsync(Tractor tractor);
@@ -94,15 +95,15 @@ namespace Trakmus.api.Services
 
         }
 
-        public List<TractorVm> GetTractorsAsync(string search)
+        public async Task<List<TractorVm>> GetTractorsAsync(string search)
         {
-            var result = _tractorRepository.FindByCondition(t=> t.TractorModel.Name.ToUpper()
+             var result = _tractorRepository.FindByCondition(t => t.TractorModel.Name.ToUpper()
             .Contains(search.ToUpper()) || t.TractorModel.Manufacturer.Name.ToUpper().Contains(search.ToUpper()));
 
             var list = Task.Run(() => result).GetAwaiter();
             var tractors = list.GetResult();
 
-            return tractors.Select(t => new TractorVm()
+            return await tractors.Select(t => new TractorVm()
             {
                 Id = t.Id.ToString(),
                 BackTires = t.BackTires,
@@ -124,11 +125,11 @@ namespace Trakmus.api.Services
                 Weight = t.Weight,
                 Year = t.Year,
                 Fuel = t.Fuel.ToString(language.Dansk)
-            }).ToList();
+            }).ToListAsync();
 
         }
 
-        public async Task<Tractor> AddTractorAsync(Tractor tractor)
+        public async Task<Tractor> CreateTractorAsync(Tractor tractor)
         {
             tractor.Id = Guid.NewGuid();
             return await _tractorRepository.CreateAsync(tractor);

@@ -55,9 +55,8 @@ namespace Trakmus.api.DAL
             }
             catch(Exception ex)
             {
-                throw new Exception($"Kunne ikke tilføje entitet: {ex.Message}");
+                throw new Exception(ex.Message);
             }
-            
         }
 
         public async Task<T> UpdateAsync(T entity)

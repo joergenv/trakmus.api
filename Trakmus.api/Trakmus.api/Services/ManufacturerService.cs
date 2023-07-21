@@ -29,6 +29,7 @@ namespace Trakmus.api.Services
         {
             try
             {
+                manufacturer.Id = Guid.NewGuid();
                 return await _manufacturerReposistory.CreateManufacturerAsync(manufacturer);
             }
             catch(Exception ex)
